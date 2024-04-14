@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tasks</title>
+
+    <!-- css normalize -->
+    <link rel="stylesheet" href="css-normalize.css" />
+    <!-- css tailwind -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <!-- we can link tailwind here also -->
+    <!-- css tailwind also -->
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+
+    <!-- js alpine -->
+    <script src="https://unpkg.com/alpinejs" defer></script>
+  </head>
+  <body class="bg-gray-100">
+    <div
+      class="container mx-auto py-8"
+      x-data="{tasks: JSON.parse(localStorage.getItem('tasks')) || []}"
+    >
+      <h1 class="text-3xl font-semibold text-center mb-8">Add Task</h1>
+
+      <!-- Task Input -->
+      <div class="mb-4">
+        <!-- title -->
+        <input
+          type="text"
+          class="w-full px-4 py-2 rounded-md border-gray-300 shadow-sm"
+          placeholder="Enter task title"
+          id="taskTitle"
+        />
+        <!-- description -->
+        <textarea
+          class="w-full mt-2 px-4 py-2 rounded-md border-gray-300 shadow-sm"
+          placeholder="Enter task description"
+          id="taskDescription"
+        ></textarea>
+        <button
+          type="button"
+          class="mt-2 px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 mx-auto block"
+          @click="addTask(tasks)"
+        >
+          Add Task
+        </button>
+      </div>
+
+      <!-- Task List -->
+      <div class="border-t-2 border-gray-300 mt-10">
+        <h2
+          class="text-3xl font-semibold mb-5 mt-10 text-center"
+          X-bind:class="tasks.length === 0 ? 'text-red-500' : ''"
+          x-text="tasks.length === 0 ? 'no tasks to show' : 'All Tasks'"
+        ></h2>
+
+        <ul>
+          <template x-for="task in tasks">
+            <li
+              :key="task.id"
+              class="shadow-md rounded-lg p-4 mb-4"
+              x-bind:class="task.completed ? 'bg-green-100' : 'bg-white'"
+            >
+              <div class="flex justify-between">
+                <!-- task title and description -->
+                <div>
+                  <h2 class="text-lg font-semibold" x-text="task.title"></h2>
+                  <p class="text-gray-600" x-text="task.description"></p>
+                </div>
+                <div>
+                  <!-- complete btn  -->
+                  <button
+                    class="px-3 py-1 text-white rounded-md mr-2"
+                    x-text="task.completed ? 'Undo' : 'Complete'"
+                    x-bind:class="task.completed ? 'bg-yellow-500' : 'bg-green-500'"
+                    @click="toggleComplete(task,tasks)"
+                  ></button>
+                  <!-- complete btn  -->
+                  <button
+                    class="px-3 py-1 bg-blue-500 text-white rounded-md mr-2"
+                    @click="editTask(task, tasks)"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="px-3 py-1 bg-red-500 text-white rounded-md"
+                    @click="deleteTask(task.id,tasks)"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
