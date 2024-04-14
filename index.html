@@ -20,22 +20,17 @@
     <script src="https://unpkg.com/alpinejs" defer></script>
   </head>
   <body class="bg-gray-100">
-    <div
-      class="container mx-auto py-8"
-      x-data="{tasks: JSON.parse(localStorage.getItem('tasks')) || []}"
-    >
-      <h1 class="text-3xl font-semibold text-center mb-8">Add Task</h1>
+    <div class="container mx-auto py-8" x-data="tasksManager">
+      <h1 class="text-3xl font-semibold text-center mb-8">Task Manager</h1>
 
       <!-- Task Input -->
       <div class="mb-4">
-        <!-- title -->
         <input
           type="text"
           class="w-full px-4 py-2 rounded-md border-gray-300 shadow-sm"
           placeholder="Enter task title"
           id="taskTitle"
         />
-        <!-- description -->
         <textarea
           class="w-full mt-2 px-4 py-2 rounded-md border-gray-300 shadow-sm"
           placeholder="Enter task description"
@@ -43,8 +38,8 @@
         ></textarea>
         <button
           type="button"
-          class="mt-2 px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 mx-auto block"
-          @click="addTask(tasks)"
+          class="mt-2 px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 block mx-auto"
+          @click="addTask"
         >
           Add Task
         </button>
@@ -57,7 +52,6 @@
           X-bind:class="tasks.length === 0 ? 'text-red-500' : ''"
           x-text="tasks.length === 0 ? 'no tasks to show' : 'All Tasks'"
         ></h2>
-
         <ul>
           <template x-for="task in tasks">
             <li
@@ -77,18 +71,18 @@
                     class="px-3 py-1 text-white rounded-md mr-2"
                     x-text="task.completed ? 'Undo' : 'Complete'"
                     x-bind:class="task.completed ? 'bg-yellow-500' : 'bg-green-500'"
-                    @click="toggleComplete(task,tasks)"
+                    @click="toggleComplete(task)"
                   ></button>
                   <!-- complete btn  -->
                   <button
                     class="px-3 py-1 bg-blue-500 text-white rounded-md mr-2"
-                    @click="editTask(task, tasks)"
+                    @click="editTask(task)"
                   >
                     Edit
                   </button>
                   <button
                     class="px-3 py-1 bg-red-500 text-white rounded-md"
-                    @click="deleteTask(task.id,tasks)"
+                    @click="deleteTask(task.id)"
                   >
                     Delete
                   </button>
