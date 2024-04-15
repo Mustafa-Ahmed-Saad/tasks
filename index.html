@@ -40,9 +40,8 @@
           type="button"
           class="mt-2 px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 block mx-auto"
           @click="addTask"
-        >
-          Add Task
-        </button>
+          x-text="existingTaskId ? 'Edit' : 'Add Task'"
+        ></button>
       </div>
 
       <!-- Task List -->

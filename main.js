@@ -17,9 +17,15 @@ const getFromLocalStorage = (key) => {
   return value ? JSON.parse(value) : null;
 };
 
+// *********************************************** when window load ***********************************************
+window.onload = function () {
+  saveInLocalStorage("existingTaskId", null);
+};
+
 // *********************************************** Alpine.js logic ***********************************************
 document.addEventListener("alpine:init", () => {
   Alpine.data("tasksManager", () => ({
+    existingTaskId: JSON.parse(localStorage.getItem("existingTaskId")) || null,
     tasks: JSON.parse(localStorage.getItem("tasks")) || [],
     addTask() {
       // .............
@@ -36,6 +42,7 @@ document.addEventListener("alpine:init", () => {
         task.description = description;
         // if we want to change completed
         // task.completed = false;
+        this.existingTaskId = null;
         saveInLocalStorage("existingTaskId", null);
 
         // or
@@ -66,11 +73,13 @@ document.addEventListener("alpine:init", () => {
       //   const task = tasks.find((task) => task.id === taskId);
       titleEl.value = task.title;
       descriptionEl.value = task.description;
+      this.existingTaskId = task.id;
       saveInLocalStorage("existingTaskId", task.id);
     },
     deleteTask(taskId) {
       this.tasks = this.tasks.filter((task) => task.id !== taskId);
       saveInLocalStorage("tasks", this.tasks);
+      this.existingTaskId = null;
       saveInLocalStorage("existingTaskId", null);
     },
   }));
